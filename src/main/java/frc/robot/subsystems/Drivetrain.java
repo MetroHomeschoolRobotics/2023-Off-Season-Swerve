@@ -7,28 +7,29 @@ import frc.robot.Constants.swerveConstants;
 public class Drivetrain extends SubsystemBase {
 
 
+  // this gets each swerve module so I won't have to get each motor and encoder individually
   private SwerveModule frontRightMod = new SwerveModule(
       "Front Right", 
-      0, 0, 
-      1, 
+      swerveConstants.swerveModuleFR.angleEncoderID, swerveConstants.swerveModuleFR.angleMotorID, 
+      swerveConstants.swerveModuleFR.driveMotorID, 
       swerveConstants.swerveModuleFR.angleMotorReversed, swerveConstants.swerveModuleFR.driveMotorReversed);
   
   private SwerveModule frontLeftMod = new SwerveModule(
       "Front Left", 
-      1, 2, 
-      3, 
+      swerveConstants.swerveModuleFL.angleEncoderID, swerveConstants.swerveModuleFL.angleMotorID, 
+      swerveConstants.swerveModuleFL.driveMotorID,
       swerveConstants.swerveModuleFL.angleMotorReversed, swerveConstants.swerveModuleFL.driveMotorReversed);
   
   private SwerveModule backRightMod = new SwerveModule(
       "Back Right", 
-      2, 4, 
-      5, 
+      swerveConstants.swerveModuleBR.angleEncoderID, swerveConstants.swerveModuleBR.angleMotorID, 
+      swerveConstants.swerveModuleBR.driveMotorID,
       swerveConstants.swerveModuleBR.angleMotorReversed, swerveConstants.swerveModuleBR.driveMotorReversed);
   
   private SwerveModule backLeftMod = new SwerveModule(
       "Back Left", 
-      3, 6, 
-      7, 
+      swerveConstants.swerveModuleBL.angleEncoderID, swerveConstants.swerveModuleBL.angleMotorID, 
+      swerveConstants.swerveModuleBL.driveMotorID,
       swerveConstants.swerveModuleBL.angleMotorReversed, swerveConstants.swerveModuleBL.driveMotorReversed);
   
 
@@ -38,7 +39,7 @@ public class Drivetrain extends SubsystemBase {
   
 
 
-
+  // TODO delete this
   public void translate(double inputX, double inputY) {
     double angle = Math.atan(inputY / inputX) * 180/Math.PI;
 
@@ -55,6 +56,7 @@ public class Drivetrain extends SubsystemBase {
     backLeftMod.setSpeed(input);
   }
   
+  //TODO delete this
   public void spin(double inputX) {
     double angle = 45;
     
@@ -69,7 +71,34 @@ public class Drivetrain extends SubsystemBase {
     backLeftMod.setSpeed(inputX);
   }
   
+  
   public void translateSpin(double speedX, double speedY, double turnX) {
+    //TODO complete and use This:
+    // Create a list of the turn vectors
+    // double[] TurnVectorsX = {};
+    // double[] TurnVectorsY = {};
+
+    // for(int i = 0; i<4; i++){
+    //   TurnVectorsX[i] = turnX * Math.cos(Math.PI/4 + ((Math.PI/2)*i));
+    //   TurnVectorsX[i] = turnX * Math.sin(Math.PI/4 + ((Math.PI/2)*i));
+    // }
+
+    // SmartDashboard.putNumberArray("TurnVectorsX", TurnVectorsX);
+    // SmartDashboard.putNumberArray("TurnVectorsY", TurnVectorsY);
+
+    // double[] VectorsAddedX = {};
+    // double[] VectorsAddedY = {};
+
+    // for(int i = 0; i<4; i++){
+    //   VectorsAddedX[i] = TurnVectorsX[i] + speedX;
+    //   VectorsAddedY[i] = TurnVectorsY[i] + speedY;
+    // }
+
+    // SmartDashboard.putNumberArray("AddedVectorsX", VectorsAddedX);
+    // SmartDashboard.putNumberArray("AddedVectorsY", VectorsAddedY);
+
+
+    // This converts everything to vectors and adds them ☺
     double TurnVectorXM1 = turnX * Math.cos(Math.PI/4);
     double TurnVectorYM1 = turnX * Math.sin(Math.PI/4);
     double TurnVectorXM2 = turnX * Math.cos(Math.PI/4 + Math.PI/2);
@@ -79,6 +108,7 @@ public class Drivetrain extends SubsystemBase {
     double TurnVectorXM4 = turnX * Math.cos(Math.PI/4 + (Math.PI*3)/2);
     double TurnVectorYM4 = turnX * Math.sin(Math.PI/4 + (Math.PI*3)/2);
 
+    // add the vectors
     double M1VectorAddedX = TurnVectorXM1 + speedX;
     double M1VectorAddedY = TurnVectorYM1 + speedY;
     double M2VectorAddedX = TurnVectorXM2 + speedX;
@@ -88,26 +118,30 @@ public class Drivetrain extends SubsystemBase {
     double M4VectorAddedX = TurnVectorXM4 + speedX;
     double M4VectorAddedY = TurnVectorYM4 + speedY;
 
+    // convert to angle
     double M1VectorAngle = Math.atan2(M1VectorAddedX, M1VectorAddedY) * 180/Math.PI;
     double M2VectorAngle = Math.atan2(M2VectorAddedX, M2VectorAddedY) * 180/Math.PI;
     double M3VectorAngle = Math.atan2(M3VectorAddedX, M3VectorAddedY) * 180/Math.PI;
     double M4VectorAngle = Math.atan2(M4VectorAddedX, M4VectorAddedY) * 180/Math.PI;
-
+    
+    // get the vector length
     double M1VectorLength = Math.sqrt(Math.pow(M1VectorAddedX, 2) + Math.pow(M1VectorAddedY, 2));
     double M2VectorLength = Math.sqrt(Math.pow(M2VectorAddedX, 2) + Math.pow(M2VectorAddedY, 2));
     double M3VectorLength = Math.sqrt(Math.pow(M3VectorAddedX, 2) + Math.pow(M3VectorAddedY, 2));
     double M4VectorLength = Math.sqrt(Math.pow(M4VectorAddedX, 2) + Math.pow(M4VectorAddedY, 2));
 
+    // get the max vector length
     double vectorLengthMax1 = Math.max(Math.abs(M1VectorLength), Math.abs(M2VectorLength));
     double vectorLengthMax2 = Math.max(Math.abs(M3VectorLength), Math.abs(M4VectorLength));
     double vectorLengthMaxT = Math.max(vectorLengthMax1, vectorLengthMax2);
-
+    
+    SmartDashboard.putNumber("Vector Max Length", vectorLengthMaxT);
+    
+    // get the normalized vectors if the max is greater than 1
     double M1VectorLengthNorm = 0;
     double M2VectorLengthNorm = 0;
     double M3VectorLengthNorm = 0;
     double M4VectorLengthNorm = 0;
-
-    SmartDashboard.putNumber("Vector Max Length", vectorLengthMaxT);
 
     if (vectorLengthMaxT >= 1) {
       M1VectorLengthNorm = M1VectorLength / vectorLengthMaxT;
@@ -121,6 +155,7 @@ public class Drivetrain extends SubsystemBase {
       M4VectorLengthNorm = M4VectorLength;
     } 
 
+    // set the module angles and speeds
     frontRightMod.setAngle(M1VectorAngle);
     frontLeftMod.setAngle(M2VectorAngle);
     backRightMod.setAngle(M3VectorAngle);

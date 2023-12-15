@@ -37,6 +37,7 @@ public class SwerveModule extends SubsystemBase {
     SmartDashboard.putNumber(placement + " Module Angle", moduleAngle());
   }
   
+  // Angle Motor
   public double moduleAngle() {
     return angleEncoder.getAbsolutePosition();
   }
@@ -55,6 +56,8 @@ public class SwerveModule extends SubsystemBase {
     return turnPID.atSetpoint();
   }
   
+
+  // Drive Motor
   public double getDistance() {
     return driveMotor.getEncoder().getPosition();
   }
@@ -64,6 +67,7 @@ public class SwerveModule extends SubsystemBase {
     driveMotor.set(speed);
   }
   
+  // this could be used for destinguishing between modules
   public String getPlacement() {
     return placement;
   }
