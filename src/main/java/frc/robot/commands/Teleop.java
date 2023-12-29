@@ -19,6 +19,7 @@ public class Teleop extends CommandBase {
   
   public void execute() {
     drivetrain.translateSpin(xboxController.getLeftX(), -xboxController.getLeftY(), xboxController.getRightX());
+    //drivetrain.translate(xboxController.getLeftX(), xboxController.getLeftY());
   }
   
   public void end(boolean interrupted) {}

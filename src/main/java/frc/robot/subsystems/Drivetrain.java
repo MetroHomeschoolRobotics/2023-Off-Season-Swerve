@@ -12,25 +12,29 @@ public class Drivetrain extends SubsystemBase {
       "Front Right", 
       swerveConstants.swerveModuleFR.angleEncoderID, swerveConstants.swerveModuleFR.angleMotorID, 
       swerveConstants.swerveModuleFR.driveMotorID, 
-      swerveConstants.swerveModuleFR.angleMotorReversed, swerveConstants.swerveModuleFR.driveMotorReversed);
+      swerveConstants.swerveModuleFR.angleMotorReversed, swerveConstants.swerveModuleFR.driveMotorReversed,
+      -339.25);
   
   private SwerveModule frontLeftMod = new SwerveModule(
       "Front Left", 
       swerveConstants.swerveModuleFL.angleEncoderID, swerveConstants.swerveModuleFL.angleMotorID, 
       swerveConstants.swerveModuleFL.driveMotorID,
-      swerveConstants.swerveModuleFL.angleMotorReversed, swerveConstants.swerveModuleFL.driveMotorReversed);
+      swerveConstants.swerveModuleFL.angleMotorReversed, swerveConstants.swerveModuleFL.driveMotorReversed,
+      -273.52);
   
   private SwerveModule backRightMod = new SwerveModule(
       "Back Right", 
       swerveConstants.swerveModuleBR.angleEncoderID, swerveConstants.swerveModuleBR.angleMotorID, 
       swerveConstants.swerveModuleBR.driveMotorID,
-      swerveConstants.swerveModuleBR.angleMotorReversed, swerveConstants.swerveModuleBR.driveMotorReversed);
+      swerveConstants.swerveModuleBR.angleMotorReversed, swerveConstants.swerveModuleBR.driveMotorReversed,
+      -331.61);
   
   private SwerveModule backLeftMod = new SwerveModule(
       "Back Left", 
       swerveConstants.swerveModuleBL.angleEncoderID, swerveConstants.swerveModuleBL.angleMotorID, 
       swerveConstants.swerveModuleBL.driveMotorID,
-      swerveConstants.swerveModuleBL.angleMotorReversed, swerveConstants.swerveModuleBL.driveMotorReversed);
+      swerveConstants.swerveModuleBL.angleMotorReversed, swerveConstants.swerveModuleBL.driveMotorReversed,
+      -43.24);
   
 
 
@@ -50,10 +54,10 @@ public class Drivetrain extends SubsystemBase {
 
     double input = Math.sqrt(Math.pow(inputX, 2) + Math.pow(inputY, 2));
 
-    frontRightMod.setSpeed(input);
-    frontLeftMod.setSpeed(input);
-    backRightMod.setSpeed(input);
-    backLeftMod.setSpeed(input);
+    //frontRightMod.setSpeed(input);
+    //frontLeftMod.setSpeed(input);
+    //backRightMod.setSpeed(input);
+    //backLeftMod.setSpeed(input);
   }
   
   //TODO delete this

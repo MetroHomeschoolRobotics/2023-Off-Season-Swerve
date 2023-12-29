@@ -1,8 +1,11 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.sensors.CANCoder;
+import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
+import com.revrobotics.CANSparkMax.IdleMode;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -10,16 +13,23 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class SwerveModule extends SubsystemBase {
   private CANCoder angleEncoder;
-  
+
   private CANSparkMax angleMotor;
   
   private CANSparkMax driveMotor;
   
-  private PIDController turnPID = new PIDController(0.01, 0, 0);
+  private PIDController turnPID = new PIDController(0.007, 0, 0);
   
   private String placement;
+
+  private double angleOffset;
   
-  public SwerveModule(String modulePlacement, int angleEncoderID, int angleMotorID, int driveMotorID, boolean angleMotorReversed, boolean driveMotorReversed) {
+  public SwerveModule(
+    String modulePlacement, 
+    int angleEncoderID, int angleMotorID, 
+    int driveMotorID,
+    boolean angleMotorReversed, boolean driveMotorReversed,
+    double _angleOffset) {
     angleEncoder = new CANCoder(angleEncoderID);
 
     angleMotor = new CANSparkMax(angleMotorID, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -28,9 +38,14 @@ public class SwerveModule extends SubsystemBase {
     driveMotor.setInverted(driveMotorReversed);
     angleMotor.setInverted(angleMotorReversed);
 
+    driveMotor.setIdleMode(IdleMode.kBrake);
+    angleMotor.setIdleMode(IdleMode.kBrake);
+
     turnPID.enableContinuousInput(-180, 180);
 
     placement = modulePlacement;
+
+    angleOffset = _angleOffset;
   }
   
   public void periodic() {
@@ -39,7 +54,7 @@ public class SwerveModule extends SubsystemBase {
   
   // Angle Motor
   public double moduleAngle() {
-    return angleEncoder.getAbsolutePosition();
+    return angleEncoder.getAbsolutePosition()+angleOffset;
   }
   
   public void setAngle(double theta) {
