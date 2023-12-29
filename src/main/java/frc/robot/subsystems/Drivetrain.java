@@ -99,14 +99,14 @@ public class Drivetrain extends SubsystemBase {
 
 
     // This converts everything to vectors and adds them ☺
-    double TurnVectorXM1 = turnX * Math.cos(Math.PI/4);
-    double TurnVectorYM1 = turnX * Math.sin(Math.PI/4);
-    double TurnVectorXM2 = turnX * Math.cos(Math.PI/4 + Math.PI/2);
-    double TurnVectorYM2 = turnX * Math.sin(Math.PI/4 + Math.PI/2);
-    double TurnVectorXM3 = turnX * Math.cos(Math.PI/4 + Math.PI);
+    double TurnVectorXM1 = turnX * Math.cos(Math.PI/4 + (Math.PI*3)/2); // front right 45 + 90
+    double TurnVectorYM1 = turnX * Math.sin(Math.PI/4 + (Math.PI*3)/2);
+    double TurnVectorXM2 = turnX * Math.cos(Math.PI/4); // front left 45
+    double TurnVectorYM2 = turnX * Math.sin(Math.PI/4);
+    double TurnVectorXM3 = turnX * Math.cos(Math.PI/4 + Math.PI); // back right 45+180
     double TurnVectorYM3 = turnX * Math.sin(Math.PI/4 + Math.PI);
-    double TurnVectorXM4 = turnX * Math.cos(Math.PI/4 + (Math.PI*3)/2);
-    double TurnVectorYM4 = turnX * Math.sin(Math.PI/4 + (Math.PI*3)/2);
+    double TurnVectorXM4 = turnX * Math.cos(Math.PI/4 + Math.PI/2); // back left 45+270
+    double TurnVectorYM4 = turnX * Math.sin(Math.PI/4 + Math.PI/2);
 
     // add the vectors
     double M1VectorAddedX = TurnVectorXM1 + speedX;
@@ -161,9 +161,9 @@ public class Drivetrain extends SubsystemBase {
     backRightMod.setAngle(M3VectorAngle);
     backLeftMod.setAngle(M4VectorAngle);
 
-    frontRightMod.setSpeed(M1VectorLengthNorm);
-    frontLeftMod.setSpeed(M2VectorLengthNorm);
-    backRightMod.setSpeed(M3VectorLengthNorm);
-    backLeftMod.setSpeed(M4VectorLengthNorm);
+    // frontRightMod.setSpeed(M1VectorLengthNorm);
+    // frontLeftMod.setSpeed(M2VectorLengthNorm);
+    // backRightMod.setSpeed(M3VectorLengthNorm);
+    // backLeftMod.setSpeed(M4VectorLengthNorm);
   }
 }

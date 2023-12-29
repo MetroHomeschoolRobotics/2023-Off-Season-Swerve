@@ -43,7 +43,12 @@ public class SwerveModule extends SubsystemBase {
   }
   
   public void setAngle(double theta) {
-    SmartDashboard.putNumber(placement + " Angle", theta);
+    
+    if(theta >= 0){
+      SmartDashboard.putNumber(placement + " Angle", theta);
+    }else{
+      SmartDashboard.putNumber(placement + " Angle", theta+360);
+    }
 
     double anglePID = MathUtil.clamp(turnPID.calculate(moduleAngle(), theta), -1, 1);
 
