@@ -42,11 +42,14 @@ public class Drivetrain extends SubsystemBase {
   private AHRS gyro = new AHRS();
 
   public Drivetrain() {
-    resetGyro();
+    gyro.reset();
+    gyro.calibrate();
   }
 
 
-  public void periodic() {}
+  public void periodic() {
+    SmartDashboard.putNumber("Gyro rotation", getRotation());
+  }
   
   /*
    * Gyro
@@ -55,8 +58,8 @@ public class Drivetrain extends SubsystemBase {
     gyro.reset();
   }
 
-  public void getRotation(){
-    gyro.getYaw();
+  public double getRotation(){
+    return gyro.getYaw();
   }
 
 
@@ -96,30 +99,6 @@ public class Drivetrain extends SubsystemBase {
   
   
   public void translateSpin(double speedX, double speedY, double turnX) {
-    //TODO complete and use This:
-    // Create a list of the turn vectors
-    // double[] TurnVectorsX = {};
-    // double[] TurnVectorsY = {};
-
-    // for(int i = 0; i<4; i++){
-    //   TurnVectorsX[i] = turnX * Math.cos(Math.PI/4 + ((Math.PI/2)*i));
-    //   TurnVectorsX[i] = turnX * Math.sin(Math.PI/4 + ((Math.PI/2)*i));
-    // }
-
-    // SmartDashboard.putNumberArray("TurnVectorsX", TurnVectorsX);
-    // SmartDashboard.putNumberArray("TurnVectorsY", TurnVectorsY);
-
-    // double[] VectorsAddedX = {};
-    // double[] VectorsAddedY = {};
-
-    // for(int i = 0; i<4; i++){
-    //   VectorsAddedX[i] = TurnVectorsX[i] + speedX;
-    //   VectorsAddedY[i] = TurnVectorsY[i] + speedY;
-    // }
-
-    // SmartDashboard.putNumberArray("AddedVectorsX", VectorsAddedX);
-    // SmartDashboard.putNumberArray("AddedVectorsY", VectorsAddedY);
-
     speedX = -speedX;
     // This converts everything to vectors and adds them ☺
     double TurnVectorXM1 = turnX * Math.cos(Math.PI/4 + (Math.PI*3)/2 + Math.PI/2 + Math.PI); // front right 45 + 270
@@ -188,5 +167,29 @@ public class Drivetrain extends SubsystemBase {
     frontLeftMod.setSpeed(MathUtil.clamp(M2VectorLengthNorm, -0.1, 0.1));
     backRightMod.setSpeed(MathUtil.clamp(M3VectorLengthNorm, -0.1, 0.1));
     backLeftMod.setSpeed(MathUtil.clamp(M4VectorLengthNorm, -0.1, 0.1));
+
+    //TODO complete and use This:
+    // Create a list of the turn vectors
+    // double[] TurnVectorsX = {};
+    // double[] TurnVectorsY = {};
+
+    // for(int i = 0; i<4; i++){
+    //   TurnVectorsX[i] = turnX * Math.cos(Math.PI/4 + ((Math.PI/2)*i));
+    //   TurnVectorsX[i] = turnX * Math.sin(Math.PI/4 + ((Math.PI/2)*i));
+    // }
+
+    // SmartDashboard.putNumberArray("TurnVectorsX", TurnVectorsX);
+    // SmartDashboard.putNumberArray("TurnVectorsY", TurnVectorsY);
+
+    // double[] VectorsAddedX = {};
+    // double[] VectorsAddedY = {};
+
+    // for(int i = 0; i<4; i++){
+    //   VectorsAddedX[i] = TurnVectorsX[i] + speedX;
+    //   VectorsAddedY[i] = TurnVectorsY[i] + speedY;
+    // }
+
+    // SmartDashboard.putNumberArray("AddedVectorsX", VectorsAddedX);
+    // SmartDashboard.putNumberArray("AddedVectorsY", VectorsAddedY);
   }
 }
