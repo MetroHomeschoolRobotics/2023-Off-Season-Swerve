@@ -1,5 +1,8 @@
 package frc.robot.subsystems;
 
+import com.kauailabs.navx.frc.AHRS;
+
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.swerveConstants;
@@ -13,46 +16,62 @@ public class Drivetrain extends SubsystemBase {
       swerveConstants.swerveModuleFR.angleEncoderID, swerveConstants.swerveModuleFR.angleMotorID, 
       swerveConstants.swerveModuleFR.driveMotorID, 
       swerveConstants.swerveModuleFR.angleMotorReversed, swerveConstants.swerveModuleFR.driveMotorReversed,
-      -339.25);
+      -221.39);
   
   private SwerveModule frontLeftMod = new SwerveModule(
       "Front Left", 
       swerveConstants.swerveModuleFL.angleEncoderID, swerveConstants.swerveModuleFL.angleMotorID, 
       swerveConstants.swerveModuleFL.driveMotorID,
       swerveConstants.swerveModuleFL.angleMotorReversed, swerveConstants.swerveModuleFL.driveMotorReversed,
-      -273.52);
+    -148.06);
   
   private SwerveModule backRightMod = new SwerveModule(
       "Back Right", 
       swerveConstants.swerveModuleBR.angleEncoderID, swerveConstants.swerveModuleBR.angleMotorID, 
       swerveConstants.swerveModuleBR.driveMotorID,
       swerveConstants.swerveModuleBR.angleMotorReversed, swerveConstants.swerveModuleBR.driveMotorReversed,
-      -331.61);
+      -91.58);
   
   private SwerveModule backLeftMod = new SwerveModule(
       "Back Left", 
       swerveConstants.swerveModuleBL.angleEncoderID, swerveConstants.swerveModuleBL.angleMotorID, 
       swerveConstants.swerveModuleBL.driveMotorID,
       swerveConstants.swerveModuleBL.angleMotorReversed, swerveConstants.swerveModuleBL.driveMotorReversed,
-      -43.24);
+      -160.22);
   
+  private AHRS gyro = new AHRS();
 
+  public Drivetrain() {
+    resetGyro();
+  }
 
 
   public void periodic() {}
   
+  /*
+   * Gyro
+   */
+  public void resetGyro() {
+    gyro.reset();
+  }
+
+  public void getRotation(){
+    gyro.getYaw();
+  }
+
+
 
 
   // TODO delete this
   public void translate(double inputX, double inputY) {
-    double angle = Math.atan(inputY / inputX) * 180/Math.PI;
+    //double angle = Math.atan(inputY / inputX) * 180/Math.PI;
 
-    frontRightMod.setAngle(angle);
-    frontLeftMod.setAngle(angle);
-    backRightMod.setAngle(angle);
-    backLeftMod.setAngle(angle);
+    frontRightMod.setAngle(inputX);
+    frontLeftMod.setAngle(inputX);
+    backRightMod.setAngle(inputX);
+    backLeftMod.setAngle(inputX);
 
-    double input = Math.sqrt(Math.pow(inputX, 2) + Math.pow(inputY, 2));
+    //double input = Math.sqrt(Math.pow(inputX, 2) + Math.pow(inputY, 2));
 
     //frontRightMod.setSpeed(input);
     //frontLeftMod.setSpeed(input);
@@ -101,16 +120,16 @@ public class Drivetrain extends SubsystemBase {
     // SmartDashboard.putNumberArray("AddedVectorsX", VectorsAddedX);
     // SmartDashboard.putNumberArray("AddedVectorsY", VectorsAddedY);
 
-
+    speedX = -speedX;
     // This converts everything to vectors and adds them ☺
-    double TurnVectorXM1 = turnX * Math.cos(Math.PI/4 + (Math.PI*3)/2); // front right 45 + 90
-    double TurnVectorYM1 = turnX * Math.sin(Math.PI/4 + (Math.PI*3)/2);
-    double TurnVectorXM2 = turnX * Math.cos(Math.PI/4); // front left 45
-    double TurnVectorYM2 = turnX * Math.sin(Math.PI/4);
-    double TurnVectorXM3 = turnX * Math.cos(Math.PI/4 + Math.PI); // back right 45+180
-    double TurnVectorYM3 = turnX * Math.sin(Math.PI/4 + Math.PI);
-    double TurnVectorXM4 = turnX * Math.cos(Math.PI/4 + Math.PI/2); // back left 45+270
-    double TurnVectorYM4 = turnX * Math.sin(Math.PI/4 + Math.PI/2);
+    double TurnVectorXM1 = turnX * Math.cos(Math.PI/4 + (Math.PI*3)/2 + Math.PI/2 + Math.PI); // front right 45 + 270
+    double TurnVectorYM1 = turnX * Math.sin(Math.PI/4 + (Math.PI*3)/2 + Math.PI/2 + Math.PI);
+    double TurnVectorXM2 = turnX * Math.cos(Math.PI/4 + Math.PI/2); // front left 45
+    double TurnVectorYM2 = turnX * Math.sin(Math.PI/4 + Math.PI/2);
+    double TurnVectorXM3 = turnX * Math.cos(Math.PI/4 + Math.PI + Math.PI/2); // back right 45+180
+    double TurnVectorYM3 = turnX * Math.sin(Math.PI/4 + Math.PI + Math.PI/2);
+    double TurnVectorXM4 = turnX * Math.cos(Math.PI/4 + Math.PI/2 + Math.PI/2 + Math.PI); // back left 45+90
+    double TurnVectorYM4 = turnX * Math.sin(Math.PI/4 + Math.PI/2 + Math.PI/2 + Math.PI);
 
     // add the vectors
     double M1VectorAddedX = TurnVectorXM1 + speedX;
@@ -165,9 +184,9 @@ public class Drivetrain extends SubsystemBase {
     backRightMod.setAngle(M3VectorAngle);
     backLeftMod.setAngle(M4VectorAngle);
 
-    // frontRightMod.setSpeed(M1VectorLengthNorm);
-    // frontLeftMod.setSpeed(M2VectorLengthNorm);
-    // backRightMod.setSpeed(M3VectorLengthNorm);
-    // backLeftMod.setSpeed(M4VectorLengthNorm);
+    frontRightMod.setSpeed(MathUtil.clamp(M1VectorLengthNorm, -0.1, 0.1));
+    frontLeftMod.setSpeed(MathUtil.clamp(M2VectorLengthNorm, -0.1, 0.1));
+    backRightMod.setSpeed(MathUtil.clamp(M3VectorLengthNorm, -0.1, 0.1));
+    backLeftMod.setSpeed(MathUtil.clamp(M4VectorLengthNorm, -0.1, 0.1));
   }
 }

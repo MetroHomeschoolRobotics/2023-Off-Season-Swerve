@@ -18,7 +18,7 @@ public class SwerveModule extends SubsystemBase {
   
   private CANSparkMax driveMotor;
   
-  private PIDController turnPID = new PIDController(0.007, 0, 0);
+  private PIDController turnPID = new PIDController(0.005, 0, 0);
   
   private String placement;
 
