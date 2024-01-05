@@ -59,7 +59,7 @@ public class Drivetrain extends SubsystemBase {
   }
 
   public double getRotation(){
-    return gyro.getYaw();
+    return gyro.getAngle();
   }
 
 
@@ -100,6 +100,18 @@ public class Drivetrain extends SubsystemBase {
   
   public void translateSpin(double speedX, double speedY, double turnX) {
     speedX = -speedX;
+
+
+    // Get the translate angle and add the gyro angle to it
+    double translateAngle = Math.atan2(speedY, speedX) * (180/Math.PI) - gyro.getAngle();
+    double translateSpeed = Math.sqrt(Math.pow(speedX, 2) + Math.pow(speedY, 2));
+
+    SmartDashboard.putNumber("Translate Angle", translateAngle);
+
+    speedX = translateSpeed * Math.cos(translateAngle * (Math.PI/180));
+    speedY = translateSpeed * Math.sin(translateAngle * (Math.PI/180));
+
+
     // This converts everything to vectors and adds them ☺
     double TurnVectorXM1 = turnX * Math.cos(Math.PI/4 + (Math.PI*3)/2 + Math.PI/2 + Math.PI); // front right 45 + 270
     double TurnVectorYM1 = turnX * Math.sin(Math.PI/4 + (Math.PI*3)/2 + Math.PI/2 + Math.PI);
@@ -110,7 +122,8 @@ public class Drivetrain extends SubsystemBase {
     double TurnVectorXM4 = turnX * Math.cos(Math.PI/4 + Math.PI/2 + Math.PI/2 + Math.PI); // back left 45+90
     double TurnVectorYM4 = turnX * Math.sin(Math.PI/4 + Math.PI/2 + Math.PI/2 + Math.PI);
 
-    // add the vectors
+
+    // Add the vectors
     double M1VectorAddedX = TurnVectorXM1 + speedX;
     double M1VectorAddedY = TurnVectorYM1 + speedY;
     double M2VectorAddedX = TurnVectorXM2 + speedX;
@@ -120,26 +133,26 @@ public class Drivetrain extends SubsystemBase {
     double M4VectorAddedX = TurnVectorXM4 + speedX;
     double M4VectorAddedY = TurnVectorYM4 + speedY;
 
-    // convert to angle
-    double M1VectorAngle = Math.atan2(M1VectorAddedX, M1VectorAddedY) * 180/Math.PI;
+    // Convert to angle
+    double M1VectorAngle = Math.atan2(M1VectorAddedX, M1VectorAddedY) * 180/Math.PI; // TODO test the field relative
     double M2VectorAngle = Math.atan2(M2VectorAddedX, M2VectorAddedY) * 180/Math.PI;
     double M3VectorAngle = Math.atan2(M3VectorAddedX, M3VectorAddedY) * 180/Math.PI;
     double M4VectorAngle = Math.atan2(M4VectorAddedX, M4VectorAddedY) * 180/Math.PI;
     
-    // get the vector length
+    // Get the vector length
     double M1VectorLength = Math.sqrt(Math.pow(M1VectorAddedX, 2) + Math.pow(M1VectorAddedY, 2));
     double M2VectorLength = Math.sqrt(Math.pow(M2VectorAddedX, 2) + Math.pow(M2VectorAddedY, 2));
     double M3VectorLength = Math.sqrt(Math.pow(M3VectorAddedX, 2) + Math.pow(M3VectorAddedY, 2));
     double M4VectorLength = Math.sqrt(Math.pow(M4VectorAddedX, 2) + Math.pow(M4VectorAddedY, 2));
 
-    // get the max vector length
+    // Get the max vector length
     double vectorLengthMax1 = Math.max(Math.abs(M1VectorLength), Math.abs(M2VectorLength));
     double vectorLengthMax2 = Math.max(Math.abs(M3VectorLength), Math.abs(M4VectorLength));
     double vectorLengthMaxT = Math.max(vectorLengthMax1, vectorLengthMax2);
     
     SmartDashboard.putNumber("Vector Max Length", vectorLengthMaxT);
     
-    // get the normalized vectors if the max is greater than 1
+    // Get the normalized vectors if the max is greater than 1
     double M1VectorLengthNorm = 0;
     double M2VectorLengthNorm = 0;
     double M3VectorLengthNorm = 0;

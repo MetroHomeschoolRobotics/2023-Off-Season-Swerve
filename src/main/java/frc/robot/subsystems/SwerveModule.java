@@ -1,7 +1,6 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.sensors.CANCoder;
-import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.CANSparkMax.IdleMode;
@@ -21,7 +20,7 @@ public class SwerveModule extends SubsystemBase {
   private PIDController turnPID = new PIDController(0.005, 0, 0);
   
   private String placement;
-
+  
   private double angleOffset;
   
   public SwerveModule(
