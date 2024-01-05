@@ -20,7 +20,7 @@ public class SwerveModule extends SubsystemBase {
   private PIDController turnPID = new PIDController(0.005, 0, 0);
   
   private String placement;
-  
+
   private double angleOffset;
   
   public SwerveModule(
@@ -58,11 +58,24 @@ public class SwerveModule extends SubsystemBase {
   
   public void setAngle(double theta) {
     
+    // post angles to the smart dashboard 0-360
     if(theta >= 0){
       SmartDashboard.putNumber(placement + " Angle", theta);
     }else{
       SmartDashboard.putNumber(placement + " Angle", theta+360);
     }
+
+    // TODO Make the wheels turn the correct distance and reverse
+    // if(theta >=90){
+    //   theta = 180-theta;
+    //   angleMotor.setInverted(true);
+    // }else if(theta <=-90){
+    //   theta = 180+theta;
+    //   angleMotor.setInverted(true);
+    // }else{
+    //   angleMotor.setInverted(false);
+    // }
+
 
     double anglePID = MathUtil.clamp(turnPID.calculate(moduleAngle(), theta), -1, 1);
 
