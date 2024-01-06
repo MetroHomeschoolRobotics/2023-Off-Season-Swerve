@@ -18,7 +18,9 @@ public class Teleop extends CommandBase {
     drivetrain = drivetrain_;
   }
   
-  public void initialize() {}
+  public void initialize() {
+    drivetrain.resetGyro();
+  }
 
   public void execute() {
     drivetrain.translateSpin(MathUtil.applyDeadband(xboxController.getLeftX(), deadband) , MathUtil.applyDeadband(-xboxController.getLeftY(), deadband), MathUtil.applyDeadband(xboxController.getRightX(), deadband));

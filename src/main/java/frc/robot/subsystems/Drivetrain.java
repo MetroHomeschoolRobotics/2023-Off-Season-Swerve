@@ -4,6 +4,7 @@ import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.swerveConstants;
 
@@ -170,16 +171,18 @@ public class Drivetrain extends SubsystemBase {
       M4VectorLengthNorm = M4VectorLength;
     } 
 
+    double maxSpeed = 0.5;
+
     // set the module angles and speeds
     frontRightMod.setAngle(M1VectorAngle);
     frontLeftMod.setAngle(M2VectorAngle);
     backRightMod.setAngle(M3VectorAngle);
     backLeftMod.setAngle(M4VectorAngle);
 
-    frontRightMod.setSpeed(MathUtil.clamp(M1VectorLengthNorm, -0.1, 0.1));
-    frontLeftMod.setSpeed(MathUtil.clamp(M2VectorLengthNorm, -0.1, 0.1));
-    backRightMod.setSpeed(MathUtil.clamp(M3VectorLengthNorm, -0.1, 0.1));
-    backLeftMod.setSpeed(MathUtil.clamp(M4VectorLengthNorm, -0.1, 0.1));
+    frontRightMod.setSpeed(MathUtil.clamp(M1VectorLengthNorm, -maxSpeed, maxSpeed));
+    frontLeftMod.setSpeed(MathUtil.clamp(M2VectorLengthNorm, -maxSpeed, maxSpeed));
+    backRightMod.setSpeed(MathUtil.clamp(M3VectorLengthNorm, -maxSpeed, maxSpeed));
+    backLeftMod.setSpeed(MathUtil.clamp(M4VectorLengthNorm, -maxSpeed, maxSpeed));
 
     //TODO complete and use This:
     // Create a list of the turn vectors

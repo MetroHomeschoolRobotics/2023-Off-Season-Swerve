@@ -67,10 +67,7 @@ public class SwerveModule extends SubsystemBase {
 
     // TODO Make the wheels turn the correct distance and reverse
     // if(theta >=90){
-    //   theta = 180-theta;
-    //   angleMotor.setInverted(true);
-    // }else if(theta <=-90){
-    //   theta = 180+theta;
+    //   theta = theta+180;
     //   angleMotor.setInverted(true);
     // }else{
     //   angleMotor.setInverted(false);
