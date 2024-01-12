@@ -17,7 +17,7 @@ public class SwerveModule extends SubsystemBase {
   
   private CANSparkMax driveMotor;
   
-  private PIDController turnPID = new PIDController(0.005, 0, 0);
+  private PIDController turnPID = new PIDController(0.005, 0, 0.0001);
   
   private String placement;
 
@@ -59,19 +59,21 @@ public class SwerveModule extends SubsystemBase {
   public void setAngle(double theta) {
     
     // post angles to the smart dashboard 0-360
-    if(theta >= 0){
-      SmartDashboard.putNumber(placement + " Angle", theta);
-    }else{
-      SmartDashboard.putNumber(placement + " Angle", theta+360);
-    }
+    //if(theta >= 0){
+    SmartDashboard.putNumber(placement + " Angle", theta);
+    //}else{
+      //SmartDashboard.putNumber(placement + " Angle", theta+360);
+    //}
 
-    // TODO Make the wheels turn the correct distance and reverse
-    // if(theta >=90){
-    //   theta = theta+180;
-    //   angleMotor.setInverted(true);
-    // }else{
-    //   angleMotor.setInverted(false);
-    // }
+    // reverses the wheels instead of spinning 180°
+    double actualAngleDist = moduleAngle()-theta;
+
+    if(actualAngleDist >=90 || actualAngleDist <=-90){
+      theta = theta+180;
+      driveMotor.setInverted(true);
+    }else{
+      driveMotor.setInverted(false);
+    }
 
 
     double anglePID = MathUtil.clamp(turnPID.calculate(moduleAngle(), theta), -1, 1);
